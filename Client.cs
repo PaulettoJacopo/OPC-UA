@@ -86,16 +86,19 @@ class Program
     {
 
         // Define the endpoint URL of the OPC UA server
-        string endpointUrl = "opc.tcp://xx.xx.xx";  
+        string endpointUrl = "opc.tcp://10.149.251.100:4840";  
 
         // Define the credentials (username and password) for authentication
-        string username = "xxxx";
-        string password = "xxxx";
+        string username = "Client1";
+        string password = "545319";
         UserIdentity userIdentity = new UserIdentity(username, password);
 
         // Load the certificate from a file
-        X509Certificate2 certificate = new X509Certificate2(@"C:\xxxx\xxxx.der");
+        //X509Certificate2 certificate = new X509Certificate2(@"C:\CM FELCA\OpcCmfelca.der");
+        string pfxFilePath = @"C:\CM FELCA\OpcCmfelca.pfx";
+        string pfxPassword = "Jacopo2022!"; 
 
+        X509Certificate2 certificate = new X509Certificate2(pfxFilePath, pfxPassword);
 
 
         // Create the OPC UA application configuration
@@ -113,7 +116,9 @@ class Program
             {
                 ApplicationCertificate = new CertificateIdentifier 
                 {   
-                    
+                    //StoreType = "Directory", 
+                    //StorePath = @"C:\Users\jacopo.pauletto\AppData\Roaming\unifiedautomation\uaexpert\PKI\trusted\certs", 
+                    //SubjectName = "OPCUAServer@EA-06F413"
                     Certificate = certificate,
                 },
                 AutoAcceptUntrustedCertificates = true,
@@ -135,19 +140,9 @@ class Program
 
             
             //Read a variable
-            NodeId nodeId = NodeId.Parse("ns=4;s=xx.xxx.xx .Application.Rx_from_Client.Order");
+            NodeId nodeId = NodeId.Parse("ns=4;s=168.33.100 .Application.Rx_from_Client.Order");
 
             var cancellationTokenSource = new CancellationTokenSource();
             var cancellationToken = cancellationTokenSource.Token;
 
             object value = await program.ReadVariableAsync(session, nodeId, cancellationToken);
-
-
-           
-
-
-        }
-    }
-
-
-}

@@ -146,3 +146,9 @@ class Program
             var cancellationToken = cancellationTokenSource.Token;
 
             object value = await program.ReadVariableAsync(session, nodeId, cancellationToken);
+
+       }
+    }
+
+
+}
